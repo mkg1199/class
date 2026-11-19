@@ -35,14 +35,17 @@ export const useCourseStore = create<CourseState>((set, get) => ({
       let localCourses = await db.courses.toArray();
       let localBatches = await db.batches.toArray();
 
-      // If empty, initialize with seed courses & batches
-      if (localCourses.length === 0) {
-        await db.courses.bulkPut(INITIAL_COURSES);
-        localCourses = INITIAL_COURSES;
+      // Clean leftover demo courses & batches if any
+      const demoCourseIds = ['course-10-cbse', 'course-11-pcm', 'course-12-pcb', 'course-jee-dropper'];
+      const demoBatchIds = ['batch-10-morn', 'batch-10-eve', 'batch-11-pcm', 'batch-12-pcb'];
+
+      if (localCourses.some(c => demoCourseIds.includes(c.id))) {
+        await db.courses.bulkDelete(demoCourseIds);
+        localCourses = await db.courses.toArray();
       }
-      if (localBatches.length === 0) {
-        await db.batches.bulkPut(INITIAL_BATCHES);
-        localBatches = INITIAL_BATCHES;
+      if (localBatches.some(b => demoBatchIds.includes(b.id))) {
+        await db.batches.bulkDelete(demoBatchIds);
+        localBatches = await db.batches.toArray();
       }
 
       set({

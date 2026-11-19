@@ -49,9 +49,10 @@ export const useExamStore = create<ExamState>((set, get) => ({
       let localExams = await db.exams.toArray();
       let localScores = await db.examScores.toArray();
 
-      if (localExams.length === 0) {
-        await db.exams.bulkPut(INITIAL_EXAMS);
-        localExams = INITIAL_EXAMS;
+      const demoExamIds = ['exam-1', 'exam-2'];
+      if (localExams.some(e => demoExamIds.includes(e.id))) {
+        await db.exams.bulkDelete(demoExamIds);
+        localExams = await db.exams.toArray();
       }
 
       set({

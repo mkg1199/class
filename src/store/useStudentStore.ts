@@ -28,9 +28,10 @@ export const useStudentStore = create<StudentState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       let localStudents = await db.students.toArray();
-      if (localStudents.length === 0) {
-        await db.students.bulkPut(INITIAL_STUDENTS);
-        localStudents = INITIAL_STUDENTS;
+      const demoIds = ['stu-101', 'stu-102', 'stu-103'];
+      if (localStudents.some(s => demoIds.includes(s.id))) {
+        await db.students.bulkDelete(demoIds);
+        localStudents = await db.students.toArray();
       }
       set({
         students: localStudents.sort((a, b) => a.name.localeCompare(b.name)),
@@ -47,7 +48,7 @@ export const useStudentStore = create<StudentState>((set, get) => ({
     const year = new Date().getFullYear();
     const count = students.length + 1;
     const padded = String(count).padStart(3, '0');
-    return `AA-${year}-${padded}`;
+    return `WT-${year}-${padded}`;
   },
 
   addStudent: async (studentData) => {

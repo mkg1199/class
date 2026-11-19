@@ -53,9 +53,10 @@ export const useFeeStore = create<FeeState>((set, get) => ({
       let localPlans = await db.feePlans.toArray();
       let localReceipts = await db.feeReceipts.toArray();
 
-      if (localPlans.length === 0) {
-        await db.feePlans.bulkPut(INITIAL_FEE_PLANS);
-        localPlans = INITIAL_FEE_PLANS;
+      const demoPlanIds = ['plan-101'];
+      if (localPlans.some(p => demoPlanIds.includes(p.id))) {
+        await db.feePlans.bulkDelete(demoPlanIds);
+        localPlans = await db.feePlans.toArray();
       }
 
       set({
