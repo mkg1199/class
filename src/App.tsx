@@ -19,6 +19,10 @@ import { useChatbotStore } from './store/useChatbotStore';
 import { initializeRealtimeLiveSync, useRealtimeStore } from './lib/realtimeSync';
 import { db } from './lib/db';
 import { getSupabaseClient } from './lib/supabase';
+import { useStudentStore } from './store/useStudentStore';
+import { useCourseStore } from './store/useCourseStore';
+import { useFeeStore } from './store/useFeeStore';
+import { useExamStore } from './store/useExamStore';
 
 import { LoginPage } from './components/auth/LoginPage';
 import { MobileMoreDrawer } from './components/coaching/MobileMoreDrawer';
@@ -220,10 +224,11 @@ export function App() {
       })();
     }
 
-    // Initial data load on mount
-    loadProducts();
-    loadCustomers();
-    loadInvoices();
+    // Initial data load on mount (Coaching Class ERP)
+    useStudentStore.getState().loadStudents();
+    useCourseStore.getState().loadCoursesAndBatches();
+    useFeeStore.getState().loadFeeData();
+    useExamStore.getState().loadExamsAndScores();
     loadSettings();
     initializeRealtimeLiveSync();
 
