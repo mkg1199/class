@@ -376,79 +376,94 @@ export function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F7F4] text-[#1C1917] flex flex-col font-sans antialiased">
-      {/* SECTION 3: Compact Horizontal Top Navigation Bar (Oxford Navy #14213D) */}
-      <header className="no-print bg-[#14213D] text-white shrink-0 border-b border-[#0A1220] shadow-sm sticky top-0 z-40 px-3 sm:px-4 py-2 flex items-center justify-between safe-area-pt">
-        {/* Brand Identity */}
-        <div className="flex items-center gap-2.5 shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-[#C88A35]/20 text-[#E0A96D] flex items-center justify-center font-black text-sm border border-[#C88A35]/40 shrink-0">
-            🎓
+    <div className="min-h-screen bg-[#F8F7F4] text-[#1C1917] flex flex-col md:flex-row font-sans antialiased">
+      {/* SECTION 3: Modern Desktop Left Sidebar (Oxford Navy #14213D) */}
+      <aside className="no-print hidden md:flex flex-col w-60 lg:w-64 bg-[#14213D] text-white shrink-0 border-r border-[#0A1220] h-screen sticky top-0 z-40 p-3.5 justify-between select-none">
+        {/* Top: Brand Identity */}
+        <div>
+          <div className="flex items-center gap-2.5 px-2 py-2 border-b border-white/10 shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-[#C88A35]/20 text-[#E0A96D] flex items-center justify-center font-black text-lg border border-[#C88A35]/40 shrink-0 shadow-xs">
+              🎓
+            </div>
+            <div className="flex flex-col min-w-0">
+              <h1 className="text-xs lg:text-sm font-black tracking-wide uppercase leading-tight truncate">
+                <span className="text-white">WEBRAJYA</span> <span className="text-[#C88A35]">TUITION</span>
+              </h1>
+              <span className="text-[10px] lg:text-[11px] text-[#C88A35]/85 font-medium truncate">
+                ERP & Fee Manager
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xs sm:text-sm font-black tracking-wide uppercase leading-none whitespace-nowrap">
-              <span className="text-white">WEBRAJYA</span> <span className="text-[#C88A35]">TUITION</span>
-            </h1>
-            <span className="hidden xl:inline-block text-[11px] text-[#C88A35]/80 font-medium border-l border-white/20 pl-2 leading-none whitespace-nowrap">
-              ERP & Fee Manager
-            </span>
-          </div>
+
+          {/* Navigation Menu Links */}
+          <nav className="mt-4 flex flex-col gap-1.5">
+            <div className="px-2.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-white/40">
+              Navigation
+            </div>
+            {navItems.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveSection(item.id)}
+                  className={`h-10 px-3 rounded-xl text-xs lg:text-sm font-semibold flex items-center justify-between transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-[#C88A35] text-[#14213D] shadow-sm font-black'
+                      : 'text-white/80 hover:bg-white/10 hover:text-white font-medium'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <span className={isActive ? 'text-[#14213D]' : 'text-[#E0A96D]'}>
+                      {item.icon}
+                    </span>
+                    <span className="truncate">{item.label}</span>
+                  </div>
+                  {item.shortcut && (
+                    <span
+                      className={`text-[9px] px-1.5 py-0.5 rounded font-mono font-bold leading-none ${
+                        isActive ? 'bg-[#14213D] text-[#C88A35]' : 'bg-black/30 text-white/70'
+                      }`}
+                    >
+                      {item.shortcut}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
-        {/* Horizontal Navigation Tabs (Desktop only) */}
-        <nav className="hidden md:flex items-center gap-1 xl:gap-1.5 flex-1 justify-center px-2">
-          {navItems.map((item) => {
-            const isActive = activeSection === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveSection(item.id)}
-                className={`h-9 px-2.5 xl:px-3 rounded-lg text-xs font-semibold flex items-center gap-1.5 whitespace-nowrap transition-all cursor-pointer shrink-0 ${
-                  isActive
-                    ? 'bg-[#C88A35] text-[#14213D] shadow-sm font-bold ring-1 ring-[#E0A96D]/50'
-                    : 'text-white/85 hover:bg-white/10 hover:text-white'
-                }`}
-              >
-                {item.icon}
-                <span className="whitespace-nowrap">{item.label}</span>
-                {item.shortcut && (
-                  <span className="text-[9px] px-1 py-0.5 rounded bg-black/20 text-white font-mono font-bold leading-none shrink-0">
-                    {item.shortcut}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </nav>
-
-        {/* Right Info: Unified Tools Dropdown & Logout */}
-        <div className="flex items-center gap-1.5 shrink-0">
-          {/* Single Unified Menu for App Download, CA Reports, Register & Support */}
+        {/* Bottom: Tools Dropdown & Actions */}
+        <div className="pt-3 border-t border-white/10 flex flex-col gap-2 shrink-0">
+          {/* Quick Tools Popup Trigger */}
           <div className="relative" ref={toolsMenuRef}>
             <button
               type="button"
               onClick={() => setIsToolsMenuOpen((prev) => !prev)}
-              className={`h-9 text-xs font-bold px-2.5 rounded-lg border flex items-center gap-1.5 whitespace-nowrap transition-all cursor-pointer active:scale-95 ${
+              className={`w-full h-9 text-xs font-bold px-3 rounded-xl border flex items-center justify-between transition-all cursor-pointer active:scale-95 ${
                 isToolsMenuOpen
                   ? 'bg-[#1D4ED8] text-white border-blue-300 ring-2 ring-white/20 shadow-md'
-                  : 'bg-white/10 hover:bg-white/20 text-white/95 hover:text-white border-white/15 shadow-xs'
+                  : 'bg-white/10 hover:bg-white/15 text-white/95 border-white/15'
               }`}
               title="Tools (Install App, CA Reports, Cash Register, Support)"
               aria-expanded={isToolsMenuOpen}
               aria-haspopup="true"
             >
-              <LayoutGrid className="w-3.5 h-3.5 text-[#E0A96D] shrink-0" />
-              <span className="tracking-wide">Tools</span>
+              <div className="flex items-center gap-2">
+                <LayoutGrid className="w-3.5 h-3.5 text-[#E0A96D] shrink-0" />
+                <span className="tracking-wide">Quick Tools</span>
+              </div>
               <ChevronDown
-                className={`w-3 h-3 text-white/70 shrink-0 transition-transform duration-200 ${
+                className={`w-3.5 h-3.5 text-white/70 shrink-0 transition-transform duration-200 ${
                   isToolsMenuOpen ? 'rotate-180' : ''
                 }`}
               />
             </button>
 
-            {/* Dropdown Menu Popup */}
+            {/* Dropdown Menu Popup - Displays upwards above the button */}
             {isToolsMenuOpen && (
               <div 
-                className="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-white rounded-xl shadow-2xl border border-slate-200 p-1.5 text-slate-800 z-50 animate-in fade-in zoom-in-95 duration-150"
+                className="absolute left-0 bottom-full mb-2 w-72 sm:w-80 bg-white rounded-xl shadow-2xl border border-slate-200 p-1.5 text-slate-800 z-50 animate-in fade-in zoom-in-95 duration-150"
                 role="menu"
               >
                 <div className="px-3 py-2 border-b border-slate-100 flex items-center justify-between">
@@ -536,7 +551,7 @@ export function App() {
                     </div>
                   )}
 
-                  {/* 2. CA Reports */}
+                  {/* 3. CA Reports */}
                   <button
                     type="button"
                     role="menuitem"
@@ -564,7 +579,7 @@ export function App() {
                     </div>
                   </button>
 
-                  {/* 3. Daily Cash Register */}
+                  {/* 4. Daily Cash Register */}
                   <button
                     type="button"
                     role="menuitem"
@@ -592,7 +607,7 @@ export function App() {
                     </div>
                   </button>
 
-                  {/* 4. Support */}
+                  {/* 5. Support */}
                   <button
                     type="button"
                     role="menuitem"
@@ -624,72 +639,104 @@ export function App() {
             )}
           </div>
 
-          {/* Fullscreen Kiosk Mode Toggle (Laptop / Desktop Viewports Only) */}
-          <button
-            type="button"
-            onClick={toggleFullscreen}
-            className={`h-9 hidden md:inline-flex items-center gap-1.5 font-bold text-xs px-2.5 rounded-lg border whitespace-nowrap transition-all cursor-pointer active:scale-95 ${
-              isFullscreen
-                ? 'bg-[#1D4ED8] text-cyan-200 border-cyan-300 ring-2 ring-white/20 shadow-md'
-                : 'bg-white/10 hover:bg-white/20 text-white/90 hover:text-white border-white/15 shadow-xs'
-            }`}
-            title={isFullscreen ? 'Exit Full Screen (Esc / F11)' : 'Enter Full Screen (F11 Kiosk Mode)'}
-            aria-label={isFullscreen ? 'Exit Full Screen' : 'Enter Full Screen'}
-          >
-            {isFullscreen ? (
-              <Minimize2 className="w-3.5 h-3.5 text-cyan-300 shrink-0" />
-            ) : (
-              <Maximize2 className="w-3.5 h-3.5 text-cyan-300 shrink-0" />
-            )}
-            <span className="tracking-wide hidden lg:inline">{isFullscreen ? 'Exit Full' : 'Full Screen'}</span>
-          </button>
-
-          <button
-            onClick={() => logout()}
-            className="h-9 bg-white/10 hover:bg-white/20 text-white/90 hover:text-white font-bold text-xs px-2.5 rounded-lg border border-white/15 flex items-center gap-1.5 whitespace-nowrap transition-all cursor-pointer active:scale-95"
-            title="Logout of WebRajya Tuition"
-          >
-            <LogOut className="w-3.5 h-3.5 text-red-300 shrink-0" />
-            <span className="hidden sm:inline">Logout</span>
-          </button>
-        </div>
-      </header>
-
-      {/* 7-Day Safety Net Automated Backup Reminder */}
-      {showBackupAlert && (
-        <div className="no-print bg-gradient-to-r from-amber-600 to-amber-700 text-white px-3 sm:px-4 py-2 text-xs flex items-center justify-between shadow-sm shrink-0 border-b border-amber-800">
-          <div className="flex items-center gap-2 min-w-0 pr-2">
-            <ShieldCheck className="w-4 h-4 text-amber-200 shrink-0" />
-            <span className="truncate">
-              <strong>Database Safety Reminder:</strong> No offline backup taken in the last 7 days. Download your JSON backup to protect sales and stock records.
-            </span>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
+          {/* Fullscreen & Logout */}
+          <div className="flex items-center gap-1.5">
             <button
-              onClick={() => {
-                setActiveSection('settings');
-                setShowBackupAlert(false);
-              }}
-              className="px-2.5 py-1 bg-white hover:bg-amber-50 text-amber-900 rounded-md font-black text-[11px] shadow-2xs transition-colors cursor-pointer"
+              type="button"
+              onClick={toggleFullscreen}
+              className="flex-1 h-9 bg-white/10 hover:bg-white/15 text-white/90 hover:text-white font-bold text-xs px-2 rounded-xl border border-white/15 flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95"
+              title={isFullscreen ? 'Exit Full Screen' : 'Enter Full Screen'}
             >
-              Backup Now
+              {isFullscreen ? (
+                <Minimize2 className="w-3.5 h-3.5 text-cyan-300 shrink-0" />
+              ) : (
+                <Maximize2 className="w-3.5 h-3.5 text-cyan-300 shrink-0" />
+              )}
+              <span className="truncate">{isFullscreen ? 'Exit' : 'Full Screen'}</span>
             </button>
+
             <button
-              onClick={() => {
-                sessionStorage.setItem('webrajya_backup_banner_dismissed', 'true');
-                setShowBackupAlert(false);
-              }}
-              className="p-1 hover:bg-white/20 rounded transition-colors text-white/90 cursor-pointer"
-              title="Dismiss for this session"
+              onClick={() => logout()}
+              className="h-9 px-2.5 bg-red-500/20 hover:bg-red-500/30 text-red-200 hover:text-white font-bold text-xs rounded-xl border border-red-500/30 flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95"
+              title="Logout of WebRajya Tuition"
             >
-              <X className="w-3.5 h-3.5" />
+              <LogOut className="w-3.5 h-3.5 shrink-0" />
+              <span>Logout</span>
             </button>
           </div>
         </div>
-      )}
+      </aside>
 
-      {/* Main Workspace Area (#F5F9FF background) */}
-      <main className="no-print flex-1 p-2 pb-28 md:p-3 md:pb-4 w-full mx-auto overflow-x-hidden">
+      {/* Main Content Area (To the right of the desktop sidebar) */}
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen">
+        {/* Mobile Top Header (Visible on mobile only) */}
+        <header className="md:hidden no-print bg-[#14213D] text-white shrink-0 border-b border-[#0A1220] px-3.5 py-2.5 flex items-center justify-between sticky top-0 z-40 safe-area-pt shadow-xs">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-[#C88A35]/20 text-[#E0A96D] flex items-center justify-center font-black text-xs border border-[#C88A35]/40 shrink-0">
+              🎓
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs font-black tracking-wide uppercase leading-tight">
+                <span className="text-white">WEBRAJYA</span> <span className="text-[#C88A35]">TUITION</span>
+              </span>
+              <span className="text-[10px] text-[#C88A35]/80 font-medium leading-none">
+                ERP & Fee Manager
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setIsMobileMoreOpen(true)}
+              className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white/90 active:scale-95 transition-all cursor-pointer"
+              title="More Options"
+            >
+              <LayoutGrid className="w-4 h-4 text-[#E0A96D]" />
+            </button>
+            <button
+              onClick={() => logout()}
+              className="p-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-200 active:scale-95 transition-all cursor-pointer"
+              title="Logout"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+        </header>
+
+        {/* 7-Day Safety Net Automated Backup Reminder */}
+        {showBackupAlert && (
+          <div className="no-print bg-gradient-to-r from-amber-600 to-amber-700 text-white px-3 sm:px-4 py-2 text-xs flex items-center justify-between shadow-sm shrink-0 border-b border-amber-800">
+            <div className="flex items-center gap-2 min-w-0 pr-2">
+              <ShieldCheck className="w-4 h-4 text-amber-200 shrink-0" />
+              <span className="truncate">
+                <strong>Database Safety Reminder:</strong> No offline backup taken in the last 7 days. Download your JSON backup to protect sales and stock records.
+              </span>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => {
+                  setActiveSection('settings');
+                  setShowBackupAlert(false);
+                }}
+                className="px-2.5 py-1 bg-white hover:bg-amber-50 text-amber-900 rounded-md font-black text-[11px] shadow-2xs transition-colors cursor-pointer"
+              >
+                Backup Now
+              </button>
+              <button
+                onClick={() => {
+                  sessionStorage.setItem('webrajya_backup_banner_dismissed', 'true');
+                  setShowBackupAlert(false);
+                }}
+                className="p-1 hover:bg-white/20 rounded transition-colors text-white/90 cursor-pointer"
+                title="Dismiss for this session"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Main Workspace Area */}
+        <main className="no-print flex-1 p-2 pb-28 md:p-4 md:pb-6 w-full mx-auto overflow-x-hidden">
         <Suspense fallback={
           <div className="flex items-center justify-center min-h-[350px] text-xs font-bold text-[#64748B]">
             <div className="w-5 h-5 border-2 border-[#2563EB] border-t-transparent rounded-full animate-spin mr-2" />
@@ -786,6 +833,7 @@ export function App() {
         onOpenSyncModal={() => setIsSyncModalOpen(true)}
         instituteName={shopProfile.shopName}
       />
+      </div>
 
       {/* Modals rendered on-demand inside Suspense */}
       <Suspense fallback={null}>
