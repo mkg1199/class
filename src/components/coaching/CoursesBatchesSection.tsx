@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { useCourseStore } from '../../store/useCourseStore';
 import { useStudentStore } from '../../store/useStudentStore';
-import { Course, Batch } from '../../types';
+import { Course, Batch, SUPPORTED_STANDARDS } from '../../types';
 
 export function CoursesBatchesSection() {
   const { courses, batches, loadCoursesAndBatches, addCourse, deleteCourse, addBatch, deleteBatch } = useCourseStore();
@@ -310,7 +310,7 @@ export function CoursesBatchesSection() {
                 <label className="block text-gray-700 font-medium mb-1">Course Name *</label>
                 <input
                   type="text"
-                  placeholder="e.g. Class 11 - PCM Target 2027"
+                  placeholder="e.g. Class 10 - Mathematics & Science"
                   value={courseName}
                   onChange={(e) => setCourseName(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-xl"
@@ -320,13 +320,18 @@ export function CoursesBatchesSection() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-gray-700 font-medium mb-1">Class / Standard *</label>
-                  <input
-                    type="text"
+                  <select
                     value={courseStandard}
                     onChange={(e) => setCourseStandard(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-xl"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-xl bg-white text-gray-800"
                     required
-                  />
+                  >
+                    {SUPPORTED_STANDARDS.map((std) => (
+                      <option key={std} value={std}>
+                        {std}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <label className="block text-gray-700 font-medium mb-1">Stream / Category</label>

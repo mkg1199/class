@@ -24,7 +24,7 @@ import { useStudentStore } from '../../store/useStudentStore';
 import { useCourseStore } from '../../store/useCourseStore';
 import { useFeeStore } from '../../store/useFeeStore';
 import { useSettingsStore } from '../../store/useSettingsStore';
-import { Student, Gender, AcademicBoard } from '../../types';
+import { Student, Gender, AcademicBoard, SUPPORTED_STANDARDS } from '../../types';
 
 export function StudentsSection() {
   const { students, loadStudents, addStudent, updateStudent, deleteStudent, generateNextEnrollmentNo } = useStudentStore();
@@ -150,11 +150,8 @@ export function StudentsSection() {
   }, [students, searchTerm, selectedStandard, statusFilter]);
 
   const allStandards = useMemo(() => {
-    const list = Array.from(new Set(students.map((s) => s.standard))).filter(Boolean);
-    return ['Class 9', 'Class 10', 'Class 11', 'Class 12', 'Repeater', ...list].filter(
-      (v, i, a) => a.indexOf(v) === i
-    );
-  }, [students]);
+    return [...SUPPORTED_STANDARDS];
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -474,12 +471,11 @@ export function StudentsSection() {
                       onChange={(e) => setStandard(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-xl bg-white text-gray-800"
                     >
-                      <option value="Class 9">Class 9</option>
-                      <option value="Class 10">Class 10</option>
-                      <option value="Class 11">Class 11 Science</option>
-                      <option value="Class 12">Class 12 Science</option>
-                      <option value="JEE Dropper">JEE Dropper / Repeater</option>
-                      <option value="NEET Dropper">NEET Dropper / Repeater</option>
+                      {SUPPORTED_STANDARDS.map((std) => (
+                        <option key={std} value={std}>
+                          {std}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div>

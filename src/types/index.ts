@@ -318,6 +318,22 @@ export interface DailyRegisterData {
 // COACHING CLASS & INSTITUTE MANAGEMENT TYPES
 // ==========================================
 
+export const SUPPORTED_STANDARDS = [
+  'LKG',
+  'UKG',
+  'Class 1',
+  'Class 2',
+  'Class 3',
+  'Class 4',
+  'Class 5',
+  'Class 6',
+  'Class 7',
+  'Class 8',
+  'Class 9',
+  'Class 10'
+] as const;
+
+export type SupportedStandard = typeof SUPPORTED_STANDARDS[number];
 export type StudentStatus = 'active' | 'inactive' | 'alumni' | 'dropped';
 export type Gender = 'male' | 'female' | 'other';
 export type AcademicBoard = 'CBSE' | 'ICSE' | 'State Board' | 'IB' | 'Other';
@@ -331,7 +347,7 @@ export interface Student {
   dob?: string;
   bloodGroup?: string;
   photoUrl?: string;
-  standard: string; // e.g. 'Class 9', 'Class 10', 'Class 11 Science', 'Class 12', 'NEET Dropper', 'JEE'
+  standard: SupportedStandard | string; // 'LKG' | 'UKG' | 'Class 1' ... 'Class 10'
   stream?: string; // Science / Commerce / Arts / Foundation
   schoolName?: string;
   board?: AcademicBoard | string;

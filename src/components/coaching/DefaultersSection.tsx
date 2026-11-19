@@ -14,7 +14,7 @@ import {
 import { useStudentStore } from '../../store/useStudentStore';
 import { useFeeStore } from '../../store/useFeeStore';
 import { useSettingsStore } from '../../store/useSettingsStore';
-import { Student } from '../../types';
+import { Student, SUPPORTED_STANDARDS } from '../../types';
 import { sendFeeDueReminderWhatsApp } from '../../lib/coachingWhatsApp';
 
 interface DefaultersSectionProps {
@@ -91,11 +91,11 @@ export function DefaultersSection({ onNavigateToFeeCounter }: DefaultersSectionP
             className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-semibold text-gray-700"
           >
             <option value="all">All Standards</option>
-            <option value="Class 9">Class 9</option>
-            <option value="Class 10">Class 10</option>
-            <option value="Class 11">Class 11</option>
-            <option value="Class 12">Class 12</option>
-            <option value="Repeater">Repeater / JEE</option>
+            {SUPPORTED_STANDARDS.map((std) => (
+              <option key={std} value={std}>
+                {std}
+              </option>
+            ))}
           </select>
         </div>
 
