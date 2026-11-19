@@ -1,0 +1,83 @@
+{
+  "name": "webrajya-invoice",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "test": "tsx scripts/comprehensiveFeatureCheck.ts && tsx scripts/preHandoverAudit.ts && tsx scripts/verifyRealtimeMultiDeviceSync.ts && tsx scripts/verifyStockIntegrity.ts && tsx scripts/verifySerialAndHardware.ts && tsx scripts/verifyAiConciseness.ts",
+    "electron:dev": "electron .",
+    "dist:win": "npm run build && electron-builder --win nsis --x64",
+    "dist:dir": "npm run build && electron-builder --dir"
+  },
+  "build": {
+    "appId": "com.webrajya.invoice",
+    "productName": "WebRajya Invoice POS",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "public/icon.ico",
+      "artifactName": "WebRajya-Invoice-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "WebRajya Invoice POS",
+      "uninstallDisplayName": "WebRajya Invoice POS"
+    }
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@zxing/library": "^0.23.0",
+    "clsx": "^2.1.1",
+    "dexie": "^4.4.6",
+    "dexie-react-hooks": "^4.4.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
+    "lucide-react": "^1.54.0",
+    "pdf-parse": "^2.4.5",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwind-merge": "^3.7.0",
+    "tailwindcss": "^4.3.3",
+    "xlsx": "^0.18.5",
+    "zod": "^4.6.5",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@types/html2canvas": "^0.5.35",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "electron": "^44.9.0",
+    "electron-builder": "^26.15.3",
+    "fake-indexeddb": "^6.2.5",
+    "oxlint": "^1.81.0",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
+  }
+}

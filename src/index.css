@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-primary-navy: #14213D;
+    --color-primary-copper: #C88A35;
+    --color-copper-hover: #B37929;
+    --color-copper-light: #FBF4EA;
+    --color-bg-app: #F8F7F4;
+    --color-bg-card: #FFFFFF;
+    --color-border: #E5E1DA;
+    --color-text-primary: #1C1917;
+    --color-text-secondary: #78716C;
+    --color-success: #1E6B52;
+    --color-warning: #B45309;
+    --color-error: #991B1B;
+  }
+
+  body {
+    @apply bg-[#F8F7F4] text-[#1C1917] font-sans antialiased selection:bg-[#F2E5D2] selection:text-[#14213D] min-h-screen overflow-x-hidden;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+}
+
+/* Mobile Safe Area & Touch Utilities */
+.safe-area-pt {
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+}
+.safe-area-pb {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+.safe-area-mb {
+  margin-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+
+/* Momentum scrolling on iOS */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom Scrollbar for Dense Tables */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* A5 Print Styles - Preserved Printer-Friendly Specs */
+@media print {
+  @page {
+    size: A5 portrait;
+    margin: 6mm 8mm;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 11px !important;
+  }
+
+  /* Hide everything except printable invoice container */
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  #printable-a5-invoice {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: black !important;
+    background: white !important;
+  }
+}
+
+@media screen {
+  .print-only {
+    display: none !important;
+  }
+}
