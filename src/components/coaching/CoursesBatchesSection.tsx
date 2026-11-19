@@ -154,89 +154,126 @@ export function CoursesBatchesSection() {
 
       {/* BATCHES VIEW */}
       {activeTab === 'batches' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {batches.map((batch) => {
-            const enrolledStudents = students.filter((s) => s.batchIds.includes(batch.id));
-            const occupancyPct = Math.round((enrolledStudents.length / (batch.maxCapacity || 40)) * 100);
+        batches.length === 0 ? (
+          <div className="bg-white rounded-2xl border border-stone-200/80 p-12 text-center shadow-xs flex flex-col items-center justify-center max-w-lg mx-auto my-6">
+            <div className="w-16 h-16 rounded-2xl bg-[#C88A35]/10 text-[#C88A35] flex items-center justify-center mb-4">
+              <BookOpen className="w-8 h-8" />
+            </div>
+            <h3 className="font-bold text-base text-stone-900">No Batches Created Yet</h3>
+            <p className="text-xs text-stone-500 mt-1.5 max-w-sm text-center leading-relaxed">
+              Create your first classroom batch with timings, days, and assigned teacher to schedule student sessions.
+            </p>
+            <button
+              onClick={() => setIsAddBatchModalOpen(true)}
+              className="mt-5 px-4 py-2.5 bg-[#C88A35] hover:bg-[#B37929] text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95"
+            >
+              <Plus className="w-4 h-4" />
+              Add Your First Batch
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {batches.map((batch) => {
+              const enrolledStudents = students.filter((s) => s.batchIds.includes(batch.id));
+              const occupancyPct = Math.round((enrolledStudents.length / (batch.maxCapacity || 40)) * 100);
 
-            return (
-              <div
-                key={batch.id}
-                className="bg-white rounded-2xl border border-gray-200/80 p-5 shadow-xs hover:border-emerald-300 transition-all space-y-4 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
-                        {batch.standard}
+              return (
+                <div
+                  key={batch.id}
+                  className="bg-white rounded-2xl border border-gray-200/80 p-5 shadow-xs hover:border-emerald-300 transition-all space-y-4 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
+                          {batch.standard}
+                        </span>
+                        <h3 className="font-bold text-gray-900 text-base mt-1.5">{batch.name}</h3>
+                        <p className="text-xs text-gray-400 mt-0.5">{batch.courseName}</p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          if (confirm(`Delete batch "${batch.name}"?`)) deleteBatch(batch.id);
+                        }}
+                        className="text-gray-400 hover:text-red-500 p-1"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    {/* Batch Details List */}
+                    <div className="space-y-2 mt-4 text-xs">
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <Clock className="w-4 h-4 text-gray-400 shrink-0" />
+                        <span>{batch.timing}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <Calendar className="w-4 h-4 text-gray-400 shrink-0" />
+                        <div className="flex flex-wrap gap-1">
+                          {batch.days.map((day) => (
+                            <span key={day} className="bg-gray-100 text-gray-700 px-1.5 py-0.5 rounded text-[10px] font-medium">
+                              {day}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <Users className="w-4 h-4 text-gray-400 shrink-0" />
+                        <span>Faculty: <strong>{batch.facultyName || 'TBD'}</strong></span>
+                      </div>
+                      {batch.classroom && (
+                        <div className="text-[11px] text-gray-400 pl-6">
+                          Classroom: {batch.classroom}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Capacity Progress Bar */}
+                  <div className="pt-3 border-t border-gray-100">
+                    <div className="flex justify-between items-center text-xs mb-1">
+                      <span className="text-gray-500">Students Enrolled</span>
+                      <span className="font-mono font-bold text-gray-800">
+                        {enrolledStudents.length} / {batch.maxCapacity}
                       </span>
-                      <h3 className="font-bold text-gray-900 text-base mt-1.5">{batch.name}</h3>
-                      <p className="text-xs text-gray-400 mt-0.5">{batch.courseName}</p>
                     </div>
-                    <button
-                      onClick={() => {
-                        if (confirm(`Delete batch "${batch.name}"?`)) deleteBatch(batch.id);
-                      }}
-                      className="text-gray-400 hover:text-red-500 p-1"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  {/* Batch Details List */}
-                  <div className="space-y-2 mt-4 text-xs">
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <Clock className="w-4 h-4 text-gray-400 shrink-0" />
-                      <span>{batch.timing}</span>
+                    <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all ${
+                          occupancyPct > 90 ? 'bg-amber-500' : 'bg-emerald-500'
+                        }`}
+                        style={{ width: `${Math.min(100, occupancyPct)}%` }}
+                      />
                     </div>
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <Calendar className="w-4 h-4 text-gray-400 shrink-0" />
-                      <div className="flex flex-wrap gap-1">
-                        {batch.days.map((day) => (
-                          <span key={day} className="bg-gray-100 text-gray-700 px-1.5 py-0.5 rounded text-[10px] font-medium">
-                            {day}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <Users className="w-4 h-4 text-gray-400 shrink-0" />
-                      <span>Faculty: <strong>{batch.facultyName || 'TBD'}</strong></span>
-                    </div>
-                    {batch.classroom && (
-                      <div className="text-[11px] text-gray-400 pl-6">
-                        Classroom: {batch.classroom}
-                      </div>
-                    )}
                   </div>
                 </div>
-
-                {/* Capacity Progress Bar */}
-                <div className="pt-3 border-t border-gray-100">
-                  <div className="flex justify-between items-center text-xs mb-1">
-                    <span className="text-gray-500">Students Enrolled</span>
-                    <span className="font-mono font-bold text-gray-800">
-                      {enrolledStudents.length} / {batch.maxCapacity}
-                    </span>
-                  </div>
-                  <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all ${
-                        occupancyPct > 90 ? 'bg-amber-500' : 'bg-emerald-500'
-                      }`}
-                      style={{ width: `${Math.min(100, occupancyPct)}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )
       )}
 
       {/* COURSES VIEW */}
       {activeTab === 'courses' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        courses.length === 0 ? (
+          <div className="bg-white rounded-2xl border border-stone-200/80 p-12 text-center shadow-xs flex flex-col items-center justify-center max-w-lg mx-auto my-6">
+            <div className="w-16 h-16 rounded-2xl bg-[#14213D]/10 text-[#14213D] flex items-center justify-center mb-4">
+              <GraduationCap className="w-8 h-8 text-[#C88A35]" />
+            </div>
+            <h3 className="font-bold text-base text-stone-900">No Courses Added Yet</h3>
+            <p className="text-xs text-stone-500 mt-1.5 max-w-sm text-center leading-relaxed">
+              Add courses (LKG, UKG, Class 1-10) with subjects, tuition fee structure, and installment schedules.
+            </p>
+            <button
+              onClick={() => setIsAddCourseModalOpen(true)}
+              className="mt-5 px-4 py-2.5 bg-[#C88A35] hover:bg-[#B37929] text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95"
+            >
+              <Plus className="w-4 h-4" />
+              Add Your First Course
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {courses.map((course) => (
             <div
               key={course.id}
@@ -293,6 +330,7 @@ export function CoursesBatchesSection() {
             </div>
           ))}
         </div>
+        )
       )}
 
       {/* CREATE COURSE MODAL */}

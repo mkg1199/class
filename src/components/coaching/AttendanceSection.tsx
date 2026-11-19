@@ -169,7 +169,19 @@ export function AttendanceSection() {
       </div>
 
       {/* Metrics & Quick Actions */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      {batches.length === 0 ? (
+        <div className="bg-white rounded-2xl border border-stone-200/80 p-12 text-center shadow-xs flex flex-col items-center justify-center max-w-lg mx-auto my-6">
+          <div className="w-16 h-16 rounded-2xl bg-[#C88A35]/10 text-[#C88A35] flex items-center justify-center mb-4">
+            <Calendar className="w-8 h-8" />
+          </div>
+          <h3 className="font-bold text-base text-stone-900">No Batches Available</h3>
+          <p className="text-xs text-stone-500 mt-1.5 max-w-sm text-center leading-relaxed">
+            Please create at least one classroom batch in the "Batches & Courses" section before marking daily attendance.
+          </p>
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="bg-white p-4 rounded-2xl border border-stone-200/80 shadow-xs">
           <span className="text-xs text-stone-400 block">Total Students</span>
           <span className="font-mono text-2xl font-bold text-stone-900">{batchStudents.length}</span>
@@ -419,6 +431,8 @@ export function AttendanceSection() {
           </table>
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }

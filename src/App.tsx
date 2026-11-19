@@ -356,13 +356,13 @@ export function App() {
   });
 
   const navItems: { id: MainSection; label: string; icon: React.ReactNode; shortcut: string }[] = [
-    { id: 'fee_counter', label: 'Fee Counter', icon: <Receipt className="w-4 h-4 text-white" />, shortcut: 'F2' },
-    { id: 'students', label: 'Students', icon: <Users className="w-4 h-4 text-white" />, shortcut: '' },
-    { id: 'batches', label: 'Batches & Courses', icon: <BookOpen className="w-4 h-4 text-white" />, shortcut: '' },
-    { id: 'attendance', label: 'Attendance', icon: <Calendar className="w-4 h-4 text-white" />, shortcut: '' },
-    { id: 'exams', label: 'Exams & Marks', icon: <Award className="w-4 h-4 text-white" />, shortcut: '' },
-    { id: 'defaulters', label: 'Defaulters', icon: <ShieldAlert className="w-4 h-4 text-white" />, shortcut: '' },
-    { id: 'settings', label: 'Settings', icon: <Settings className="w-4 h-4 text-white" />, shortcut: '' },
+    { id: 'fee_counter', label: 'Fee Counter', icon: <Receipt className="w-3.5 h-3.5 text-current shrink-0" />, shortcut: 'F2' },
+    { id: 'students', label: 'Students', icon: <Users className="w-3.5 h-3.5 text-current shrink-0" />, shortcut: '' },
+    { id: 'batches', label: 'Batches & Courses', icon: <BookOpen className="w-3.5 h-3.5 text-current shrink-0" />, shortcut: '' },
+    { id: 'attendance', label: 'Attendance', icon: <Calendar className="w-3.5 h-3.5 text-current shrink-0" />, shortcut: '' },
+    { id: 'exams', label: 'Exams & Marks', icon: <Award className="w-3.5 h-3.5 text-current shrink-0" />, shortcut: '' },
+    { id: 'defaulters', label: 'Defaulters', icon: <ShieldAlert className="w-3.5 h-3.5 text-current shrink-0" />, shortcut: '' },
+    { id: 'settings', label: 'Settings', icon: <Settings className="w-3.5 h-3.5 text-current shrink-0" />, shortcut: '' },
   ];
 
   // Render Login Page if user is not authenticated
@@ -380,50 +380,38 @@ export function App() {
       {/* SECTION 3: Compact Horizontal Top Navigation Bar (Oxford Navy #14213D) */}
       <header className="no-print bg-[#14213D] text-white shrink-0 border-b border-[#0A1220] shadow-sm sticky top-0 z-40 px-3 sm:px-4 py-2 flex items-center justify-between safe-area-pt">
         {/* Brand Identity */}
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#C88A35]/20 text-[#E0A96D] p-0.5 shadow-sm shrink-0 flex items-center justify-center font-black text-sm border border-[#C88A35]/40">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-[#C88A35]/20 text-[#E0A96D] flex items-center justify-center font-black text-sm border border-[#C88A35]/40 shrink-0">
             🎓
           </div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xs sm:text-sm font-black tracking-wide uppercase leading-none">
+            <h1 className="text-xs sm:text-sm font-black tracking-wide uppercase leading-none whitespace-nowrap">
               <span className="text-white">WEBRAJYA</span> <span className="text-[#C88A35]">TUITION</span>
             </h1>
-            <span className="hidden sm:inline-block text-[11px] text-[#C88A35]/80 font-medium border-l border-white/20 pl-2 leading-none">
+            <span className="hidden xl:inline-block text-[11px] text-[#C88A35]/80 font-medium border-l border-white/20 pl-2 leading-none whitespace-nowrap">
               ERP & Fee Manager
             </span>
           </div>
         </div>
 
         {/* Horizontal Navigation Tabs (Desktop only) */}
-        <nav className="hidden md:flex items-center gap-1.5">
+        <nav className="hidden md:flex items-center gap-1 xl:gap-1.5 flex-1 justify-center px-2">
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => setActiveSection(item.id)}
-                className={`relative flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                className={`h-9 px-2.5 xl:px-3 rounded-lg text-xs font-semibold flex items-center gap-1.5 whitespace-nowrap transition-all cursor-pointer shrink-0 ${
                   isActive
                     ? 'bg-[#C88A35] text-[#14213D] shadow-sm font-bold ring-1 ring-[#E0A96D]/50'
                     : 'text-white/85 hover:bg-white/10 hover:text-white'
                 }`}
               >
-                <div className="flex items-center gap-1.5">
-                  {item.icon}
-                  <span>{item.label}</span>
-                </div>
-                {item.id === 'billing' && cartItemsCount > 0 && (
-                  <span className="px-1.5 py-0.2 rounded-md bg-[#EF4444] text-white text-[10px] font-mono font-black">
-                    {cartItemsCount}
-                  </span>
-                )}
-                {item.id === 'inventory' && lowStockCount > 0 && (
-                  <span className="px-1.5 py-0.2 rounded-md bg-amber-500 text-white text-[10px] font-mono font-black">
-                    {lowStockCount}
-                  </span>
-                )}
+                {item.icon}
+                <span className="whitespace-nowrap">{item.label}</span>
                 {item.shortcut && (
-                  <span className="text-[10px] px-1.5 py-0.2 rounded-md bg-white/20 text-white font-mono font-bold">
+                  <span className="text-[9px] px-1 py-0.5 rounded bg-black/20 text-white font-mono font-bold leading-none shrink-0">
                     {item.shortcut}
                   </span>
                 )}
@@ -433,13 +421,13 @@ export function App() {
         </nav>
 
         {/* Right Info: Unified Tools Dropdown & Logout */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="flex items-center gap-1.5 shrink-0">
           {/* Single Unified Menu for App Download, CA Reports, Register & Support */}
           <div className="relative" ref={toolsMenuRef}>
             <button
               type="button"
               onClick={() => setIsToolsMenuOpen((prev) => !prev)}
-              className={`text-xs font-bold px-2 sm:px-2.5 py-1.5 rounded-lg border flex items-center gap-1.5 whitespace-nowrap transition-all cursor-pointer active:scale-95 ${
+              className={`h-9 text-xs font-bold px-2.5 rounded-lg border flex items-center gap-1.5 whitespace-nowrap transition-all cursor-pointer active:scale-95 ${
                 isToolsMenuOpen
                   ? 'bg-[#1D4ED8] text-white border-blue-300 ring-2 ring-white/20 shadow-md'
                   : 'bg-white/10 hover:bg-white/20 text-white/95 hover:text-white border-white/15 shadow-xs'
@@ -640,7 +628,7 @@ export function App() {
           <button
             type="button"
             onClick={toggleFullscreen}
-            className={`hidden md:inline-flex items-center gap-1.5 font-bold text-xs px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer active:scale-95 ${
+            className={`h-9 hidden md:inline-flex items-center gap-1.5 font-bold text-xs px-2.5 rounded-lg border whitespace-nowrap transition-all cursor-pointer active:scale-95 ${
               isFullscreen
                 ? 'bg-[#1D4ED8] text-cyan-200 border-cyan-300 ring-2 ring-white/20 shadow-md'
                 : 'bg-white/10 hover:bg-white/20 text-white/90 hover:text-white border-white/15 shadow-xs'
@@ -653,15 +641,15 @@ export function App() {
             ) : (
               <Maximize2 className="w-3.5 h-3.5 text-cyan-300 shrink-0" />
             )}
-            <span className="tracking-wide">{isFullscreen ? 'Exit Full' : 'Full Screen'}</span>
+            <span className="tracking-wide hidden lg:inline">{isFullscreen ? 'Exit Full' : 'Full Screen'}</span>
           </button>
 
           <button
             onClick={() => logout()}
-            className="bg-white/10 hover:bg-white/20 text-white/90 hover:text-white font-bold text-xs px-2 sm:px-2.5 py-1.5 rounded-lg border border-white/15 flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
-            title="Logout of WebRajya Invoice"
+            className="h-9 bg-white/10 hover:bg-white/20 text-white/90 hover:text-white font-bold text-xs px-2.5 rounded-lg border border-white/15 flex items-center gap-1.5 whitespace-nowrap transition-all cursor-pointer active:scale-95"
+            title="Logout of WebRajya Tuition"
           >
-            <LogOut className="w-3.5 h-3.5 text-red-300" />
+            <LogOut className="w-3.5 h-3.5 text-red-300 shrink-0" />
             <span className="hidden sm:inline">Logout</span>
           </button>
         </div>

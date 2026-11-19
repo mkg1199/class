@@ -148,8 +148,29 @@ export function ExamsMarksSection() {
       </div>
 
       {/* Exams Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {exams.map((exam) => {
+      {exams.length === 0 ? (
+        <div className="bg-white rounded-2xl border border-stone-200/80 p-12 text-center shadow-xs flex flex-col items-center justify-center max-w-lg mx-auto my-6">
+          <div className="w-16 h-16 rounded-2xl bg-[#C88A35]/10 text-[#C88A35] flex items-center justify-center mb-4">
+            <Award className="w-8 h-8" />
+          </div>
+          <h3 className="font-bold text-base text-stone-900">No Tests or Exams Scheduled</h3>
+          <p className="text-xs text-stone-500 mt-1.5 max-w-sm text-center leading-relaxed">
+            Schedule your first weekly quiz, unit test or term exam to start recording marks and generating report cards.
+          </p>
+          <button
+            onClick={() => {
+              setExamBatchId(batches[0]?.id || '');
+              setIsAddExamModalOpen(true);
+            }}
+            className="mt-5 px-4 py-2.5 bg-[#C88A35] hover:bg-[#B37929] text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer active:scale-95"
+          >
+            <Plus className="w-4 h-4" />
+            Schedule Your First Test
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {exams.map((exam) => {
           const scores = getScoresForExam(exam.id);
           const topScore = scores.length > 0 ? Math.max(...scores.map((s) => (s.isAbsent ? 0 : s.marksObtained))) : null;
           const avgScore =
@@ -232,6 +253,7 @@ export function ExamsMarksSection() {
           );
         })}
       </div>
+      )}
 
       {/* SCHEDULE EXAM MODAL */}
       {isAddExamModalOpen && (
